@@ -2,6 +2,7 @@ __author__ = 'alm'
 # parsing the knowledge noc_parser for Tony's NOC file
 
 from datasets_pattern_code import noc
+import help_dataset
 from pattern.text.en import referenced
 import random
 import logging
@@ -9,8 +10,8 @@ import sys
 
 log = logging.getLogger('char_parser')
 
-roles_file = '../datasets_pattern_code/role_classification_olli.xlsx'
-adjectives_file = '../datasets_pattern_code/adjective_classification_olli.xlsx'
+roles_file = '../datasets/role_classification_olli.xlsx'
+adjectives_file = '../datasets/adjective_classification_olli.xlsx'
 
 class FIELD:
     NAME = 'Character'
@@ -32,6 +33,7 @@ class KB_parser:
         adj_sets = self._init_adjectives()
         self.weak_adjs = adj_sets[0]
         self.strong_adjs = adj_sets[1]
+        self.good_superlatives, self.evil_superlatives = help_dataset.load_good_evil_superlatives()
 
     def _init_adjectives(self):
         weak_adjs = []
@@ -132,7 +134,7 @@ class KB_parser:
         else:
             for neg_feature in neg_arr:
                 if neg_feature not in result:
-                    if  neg_feature in self.weak_adjs:
+                    if  neg_feature in self.strong_adjs:
                         log.debug('Ignored '+neg_feature+' as a weak one')
                     else:
                         neg_arr.remove(neg_feature)
@@ -150,7 +152,7 @@ class KB_parser:
         person_data = self.get_person(name)
         log.debug('POS: '+person_data[FIELD.POSITIVE])
         log.debug('NEG: '+person_data[FIELD.NEGATIVE])
-        print 'This is a story about '+name+', '
+
         pos_feat = [x.strip() for x in person_data[FIELD.POSITIVE].split(',')]
         pos_weak = ', '.join(self.prefer_weak_emphathetic_features(pos_feat,2))
         married = person_data[FIELD.MARRIED].split(' ')[0]
@@ -161,18 +163,24 @@ class KB_parser:
         elif gender == 'female':
             gender = random.choice(['lady','female','woman'])
 
-
-        print self.add_article(pos_weak)+', '+married+' '+gender
+        return 'This is a story about '+name+', '+self.add_article(pos_weak)+', '+married+' '+gender
 
     def negative_story_about(self, name):
         log.debug('CHARACTER: '+name)
         person_data = self.get_person(name)
         log.debug('POS: '+person_data[FIELD.POSITIVE])
         log.debug('NEG: '+person_data[FIELD.NEGATIVE])
-        print 'This is a story about '+name+', '
-        pos_feat = [x.strip() for x in person_data[FIELD.NEGATIVE].split(',')]
-        pos_weak = ', '.join(self.prefer_weak_emphathetic_features(pos_feat,2))
-        married = person_data[FIELD.MARRIED].split(' ')[0]
+
+        neg_feat = [x.strip() for x in person_data[FIELD.NEGATIVE].split(',')]
+        neg_strong_arr = self.prefer_strong_negative_features(neg_feat,2)
+
+        neg_strong_str = ''
+        print neg_strong_arr
+        if len(neg_strong_arr) == 1:
+            neg_strong_str += neg_strong_arr[0]
+        elif len(neg_strong_arr) == 2:
+            neg_strong_str += neg_strong_arr[0]+', '
+            neg_strong_str += neg_strong_arr[1]
 
         gender = person_data[FIELD.GENDER]
         if gender == 'male':
@@ -181,7 +189,7 @@ class KB_parser:
             gender = random.choice(['female','woman'])
 
 
-        print self.add_article(pos_weak)+', '+' '+gender
+        return 'This is a story about '+name+', '+self.add_article(neg_strong_str)+' and '+random.choice(self.evil_superlatives)+' '+gender+' ever seen.'
 
 
 
@@ -204,7 +212,7 @@ if __name__ == "__main__":
     #k.positive_story_about(k.get_random_fictional_character_name())
     #k.positive_story_about('Darth Vader')
     #k.positive_story_about('Clark Kent')
-    k.negative_story_about(k.get_random_fictional_character_name())
+    print k.negative_story_about(k.get_random_fictional_character_name())
     #k.positive_story_about('Darth Vader')
     #print k.get_opponent_of(k.get_random_fictional_character_name())
     #
