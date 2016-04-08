@@ -45,8 +45,24 @@ def character_feature_extractor():
 
     return sorted(list(set(result)))
 
+def load_good_evil_superlatives():
+    good = []
+    evil = []
+    for row in noc.parse_rows('../datasets/superlatives_good_bad.xlsx'):
+        if 'Evil' in row:
+            val = row['Evil']
+            if val != '':
+                evil.append(row['Evil'])
+        if 'Good' in row:
+            val = row['Good']
+            if val != '':
+                good.append(row['Good'])
+    return good, evil
+
+
 
 if __name__ == '__main__':
-    for line in character_feature_extractor():
-        print line
+    print load_good_evil_superlatives()
+    #for line in character_feature_extractor():
+    #    print line
 
