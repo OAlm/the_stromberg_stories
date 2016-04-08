@@ -1,19 +1,23 @@
-from ani.data.LoadInitial import Load_Initial, GetPreambleActionsByKey
-from ani.data.LoadMiddle import Load_Middle, GetActionsByKey, ExistsActionBykey
-from ani.data.LoadEnd import LoadEnd,GetEndActionsByKey, ExistsEndActionsByKey
-from ani.data.LoadIdioms import Load_Idioms, GetIdiomsActionsByKey, ExistsIdiomsActionsByKey
+import logging
 import random
+import sys
 
 from pattern.text.en import tag
-
-import sys
+from util.LoadMiddle import Load_Middle
+from util.LoadMiddle import GetActionsByKey
+from util.LoadEnd import LoadEnd
+from util.LoadEnd import GetEndActionsByKey
+from util.LoadInitial import Load_Initial
+from util.LoadIdioms import Load_Idioms
+from util.LoadInitial import GetPreambleActionsByKey
 
 initial = Load_Initial()
 midpoint = Load_Middle()
 end=LoadEnd()
 idioms=Load_Idioms()
-import logging
-log = logging.getLogger('transition_initial_midpoint_end')
+log = logging.getLogger('story_generator')
+
+
 
 def get_mid_action_for_key(key, actions):
     key = key.strip()

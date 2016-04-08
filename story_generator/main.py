@@ -1,11 +1,12 @@
 __author__ = 'alm'
 
-import transition_initial_midpoint_end as t
 import logging
-import itertools
-import sys
 
+import story_generator as t
 from datasets_pattern_code import noc
+
+#from story_generator.util import LoadMiddle
+
 
 def action_relations():
     action_relations = noc.parse_rows('../dataset_scaleatrix/ActionRelation2.xlsx')
@@ -34,11 +35,6 @@ if __name__ == '__main__':
     B = 'Batman'
 
     sentiment_arr = [(0,0),(-1,0),(-2,0),(1,-1),(2,-2),(2,0)]
-
-    #t.get_story(A, B, actions, no_of_sentences=6, key='marry')
-
-    #sent_arr =
-
     t.get_story_with_sentiment(A, B, actions, sentiment_flow_array=sentiment_arr)
 
 
