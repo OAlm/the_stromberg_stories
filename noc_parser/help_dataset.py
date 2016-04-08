@@ -62,7 +62,10 @@ def load_good_evil_superlatives():
 
 
 if __name__ == '__main__':
-    print load_good_evil_superlatives()
+    import random
+    good, evil = load_good_evil_superlatives()
+    print random.choice(good)
+    print random.choice(evil)
     #for line in character_feature_extractor():
     #    print line
 
