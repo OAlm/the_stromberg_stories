@@ -1,13 +1,14 @@
-__author__ = 'alm'
+__author__ = 'all'
 
 import logging
 
-import story_generator.story_generator as t
+import story_generator as t
 from datasets_pattern_code import noc
+import loadNOC
 
 
 def action_relations():
-    action_relations = noc.parse_rows('../dataset_scaleatrix/ActionRelation2.xlsx')
+    action_relations = noc.parse_rows('../datasets/ActionRelation2.xlsx')
     result = {}
     for ar in action_relations:
         tuple_ = int(ar['A'].replace('v','')), int(ar['B'].replace('v',''))
@@ -15,7 +16,7 @@ def action_relations():
     return result
 
 def parse_actions():
-    actions= noc.parse_rows('../dataset_scaleatrix/idiomatic_actions.xlsx')
+    actions= noc.parse_rows('../datasets/idiomatic_actions.xlsx')
     ar_dict = action_relations()
     result = {}
     for action in actions:
@@ -31,6 +32,18 @@ if __name__ == '__main__':
 
     A = 'Joker'
     B = 'Batman'
+
+
+    nocs = loadNOC.Load_NOC()
+    #print actions
+
+    A = 'The Joker'
+    B = 'Batman'
+
+    BB,AA = loadNOC.GetPositiveCharacterAndNegativeCharater(nocs)
+
+    print AA
+    print BB
 
     sentiment_arr = [(0,0),(-1,0),(-2,0),(1,-1),(2,-2),(2,0)]
 

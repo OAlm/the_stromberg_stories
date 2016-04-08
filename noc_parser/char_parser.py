@@ -176,12 +176,12 @@ class KB_parser:
 
         gender = person_data[FIELD.GENDER]
         if gender == 'male':
-            gender = random.choice(['guy','male','man'])
+            gender = random.choice(['guy','male','man','bastard'])
         elif gender == 'female':
-            gender = random.choice(['lady','female','woman'])
+            gender = random.choice(['female','woman'])
 
 
-        print self.add_article(pos_weak)+', '+married+' '+gender
+        print self.add_article(pos_weak)+', '+' '+gender
 
 
 
@@ -202,9 +202,9 @@ if __name__ == "__main__":
     k = KB_parser()
     #print k.get_opponent_of('Darth Vader')
     #k.positive_story_about(k.get_random_fictional_character_name())
-    k.positive_story_about('Darth Vader')
-    k.positive_story_about('Clark Kent')
-    #k.negative_story_about(k.get_random_fictional_character_name())
+    #k.positive_story_about('Darth Vader')
+    #k.positive_story_about('Clark Kent')
+    k.negative_story_about(k.get_random_fictional_character_name())
     #k.positive_story_about('Darth Vader')
     #print k.get_opponent_of(k.get_random_fictional_character_name())
     #
